@@ -1,9 +1,10 @@
 import Image from "next/image";
+import Body from "./body";
 
 export default function Home() {
 	return (
-		<main className="">
-			<p className="text-red-800">Hello World</p>
+		<main className="flex h-screen w-screen">
+			<Body />
 		</main>
 	);
 }
