@@ -17,9 +17,15 @@ export default function Body() {
 		format.push(<div className="flex gap-1">{row}</div>);
 	}
 
+	const date = new Date();
+
+	const pastDate = new Date(date);
+	pastDate.setDate(date.getDate() - 365);
+
 	return (
 		<div className="w-full h-full flex flex-col gap-1 justify-center items-center">
 			{format}
+			<div className="">{pastDate.toUTCString()}</div>
 		</div>
 	);
 }
