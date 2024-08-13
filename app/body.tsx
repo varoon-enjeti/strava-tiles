@@ -10,15 +10,19 @@ export default function Body() {
 
 	for (let i = 0; i < 7; i++) {
 		const row = [];
-		// const curr = new Date();
-		// curr.setDate(reference.getDate() + i);
-		for (let j = 0; j < 52; j++) {
-			const inst = new Date();
+
+		// i represents the day of the week (row), and j represents the week (column)
+		for (let j = 0; j < 53; j++) {
+			const inst = new Date(reference);
 			inst.setDate(reference.getDate() + j * 7 + i);
-			inst.setFullYear(inst.getFullYear() - 1);
+			if (j === 52) {
+				console.log(inst);
+				if (inst > today) {
+					console.log("no");
+					continue;
+				}
+			}
 			row.push(<Tile date={inst} />);
-			// curr.setDate(curr.getDate() + 7);
-			console.log(inst.toDateString() + "\n");
 		}
 		raw.push(row);
 	}
@@ -28,15 +32,10 @@ export default function Body() {
 		format.push(<div className="flex gap-1">{row}</div>);
 	}
 
-	const test1 = new Date();
-	test1.setDate(reference.getDate() + 7);
-	const test2 = new Date();
-	test2.setDate(reference.getDate() + 7);
-
 	return (
 		<div className="w-full h-full flex flex-col gap-1 justify-center items-center">
-			{format}
-			<div className="">{test1.toDateString()}</div>
+			<div className="items-start flex flex-col gap-1">{format}</div>
+			<div className="">{today.toDateString()}</div>
 		</div>
 	);
 }
