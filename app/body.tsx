@@ -37,7 +37,14 @@ export default function Body() {
 
 	return (
 		<div className="w-full h-full flex flex-col gap-1 justify-center items-center">
-			<div className="items-start flex flex-col gap-1">{grid}</div>
+			<div className="flex gap-2">
+				<div className="flex flex-col mt-3 gap-[12px]">
+					<div className="text-sm">Mon</div>
+					<div className="text-sm">Wed</div>
+					<div className="text-sm">Fri</div>
+				</div>
+				<div className="items-start flex flex-col gap-1">{grid}</div>
+			</div>
 			<div className="">{today.toDateString()}</div>
 		</div>
 	);
