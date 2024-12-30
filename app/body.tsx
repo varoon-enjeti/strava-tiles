@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import Tile from "./tile";
+import { Activity } from "@/server/activity";
+import { formattedActivities } from "@/server/strava";
 
 export default function Body() {
 	const [grid, setGrid] = useState<JSX.Element[]>([]);
