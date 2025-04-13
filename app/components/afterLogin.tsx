@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Tile from "../tile";
 
-export default function AfterLogin() {
+export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 	const [grid, setGrid] = useState<JSX.Element[]>([]);
 	const [today, setToday] = useState(new Date());
 
@@ -35,6 +35,11 @@ export default function AfterLogin() {
 		setToday(currentToday);
 	}, []);
 
+	function logOut() {
+		localStorage.setItem("strava_logged_in", "false");
+		onLogout();
+	}
+
 	return (
 		<div className="w-full h-full flex flex-col gap-1 justify-center items-center">
 			<div className="flex gap-2">
@@ -46,6 +51,12 @@ export default function AfterLogin() {
 				<div className="items-start flex flex-col gap-1">{grid}</div>
 			</div>
 			<div className="">{today.toDateString()}</div>
+			<button
+				className="bg-orange-600 text-white w-24 h-10 rounded-lg hover:scale-110 transition-all duration-300"
+				onClick={logOut}
+			>
+				Log Out
+			</button>
 		</div>
 	);
 }

@@ -28,7 +28,7 @@ export default async function handler(
 		console.log(accessToken);
 		console.log(athlete);
 
-		res.redirect("/?loggedIn=true");
+		res.redirect("/?logged_in=true");
 	} catch (error: any) {
 		console.error(
 			"Token exchange failed:",
