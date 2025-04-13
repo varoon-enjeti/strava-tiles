@@ -41,8 +41,8 @@ export default function Body() {
 
 	return (
 		<div className="w-full h-full flex flex-col gap-1 justify-center items-center">
-			{/* <BeforeLogin /> */}
-			<AfterLogin />
+			<BeforeLogin />
+			{/* <AfterLogin /> */}
 		</div>
 	);
 }
