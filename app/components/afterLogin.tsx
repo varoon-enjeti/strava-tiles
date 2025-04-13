@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Tile from "../tile";
 
-export default function afterLogin() {
+export default function AfterLogin() {
 	const [grid, setGrid] = useState<JSX.Element[]>([]);
 	const [today, setToday] = useState(new Date());
 

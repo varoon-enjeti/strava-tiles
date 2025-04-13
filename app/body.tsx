@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import Tile from "./tile";
 import { Activity } from "@/server/activity";
 import { formattedActivities } from "@/server/strava";
-import beforeLogin from "./components/beforeLogin";
-import afterLogin from "./components/afterLogin";
+import BeforeLogin from "./components/beforeLogin";
+import AfterLogin from "./components/afterLogin";
 
 export default function Body() {
 	// const [grid, setGrid] = useState<JSX.Element[]>([]);
@@ -41,7 +41,8 @@ export default function Body() {
 
 	return (
 		<div className="w-full h-full flex flex-col gap-1 justify-center items-center">
-			a
+			{/* <BeforeLogin /> */}
+			<AfterLogin />
 		</div>
 	);
 }
