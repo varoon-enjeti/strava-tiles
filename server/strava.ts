@@ -1,10 +1,41 @@
+import express from "express";
 import axios from "axios";
 import { error } from "console";
 import { Activity } from "./activity";
 
+const CLIENT_ID = "131710";
+
+const getAthlete = async () => {
+	const url = "https://www.strava.com/api/v3/athlete";
+	const accessToken = "1864c3345b70a1ed51f6011bd80efe55115911c1";
+
+	try {
+		const response = await axios.get(url, {
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+		});
+		return response.data;
+	} catch (error) {
+		console.error("Error Fetching Athlete: ", error);
+	}
+};
+
+// const StravaOAuth2 = async () => {
+// 	const url = `http://www.strava.com/oauth/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=http://localhost:3000&approval_prompt=force&scope=activity:read_all`;
+// 	const test = "/";
+
+// 	try {
+// 		const response = await axios.get(test);
+// 		console.log(response);
+// 	} catch (error) {
+// 		console.error("Error Fetching OAuth2 Response: ", error);
+// 	}
+// };
+
 const fetchActivities = async () => {
 	const url = "https://www.strava.com/api/v3/athlete/activities?";
-	const accessToken = "";
+	const accessToken = "984d07c3a4df0322cb67d5ad9be24477ad140f05";
 	const after_epoch = "1704067200";
 	const per_page = 200;
 
@@ -18,7 +49,7 @@ const fetchActivities = async () => {
 		});
 		return response.data;
 	} catch (error) {
-		console.error("Error Fetching Activities:", error);
+		console.error("Error Fetching Activities: ", error);
 	}
 };
 
@@ -47,9 +78,13 @@ export const formattedActivities = async (): Promise<Activity[]> => {
 	}
 };
 
-// const test = async () => {
-// 	let res = await formattedActivities();
-// 	console.log(res);
-// };
+const test = async () => {
+	await StravaOAuth2();
+	// let athleteRes = await getAthlete();
+	// console.log(athleteRes);
 
-// test();
+	// let res = await formattedActivities();
+	// console.log(res);
+};
+
+test();

@@ -39,13 +39,63 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.formattedActivities = void 0;
 var axios_1 = require("axios");
 var activity_1 = require("./activity");
+var CLIENT_ID = "131710";
+var getAthlete = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var url, accessToken, response, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                url = "https://www.strava.com/api/v3/athlete";
+                accessToken = "1864c3345b70a1ed51f6011bd80efe55115911c1";
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, axios_1.default.get(url, {
+                        headers: {
+                            Authorization: "Bearer ".concat(accessToken),
+                        },
+                    })];
+            case 2:
+                response = _a.sent();
+                return [2 /*return*/, response.data];
+            case 3:
+                error_1 = _a.sent();
+                console.error("Error Fetching Athlete: ", error_1);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+var StravaOAuth2 = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var url, test, response, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                url = "http://www.strava.com/oauth/authorize?client_id=".concat(CLIENT_ID, "&response_type=code&redirect_uri=http://localhost:3000&approval_prompt=force&scope=activity:read_all");
+                test = "/";
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, axios_1.default.get(test)];
+            case 2:
+                response = _a.sent();
+                console.log(response);
+                return [3 /*break*/, 4];
+            case 3:
+                error_2 = _a.sent();
+                console.error("Error Fetching OAuth2 Response: ", error_2);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
 var fetchActivities = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var url, accessToken, after_epoch, per_page, response, error_1;
+    var url, accessToken, after_epoch, per_page, response, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 url = "https://www.strava.com/api/v3/athlete/activities?";
-                accessToken = "8edaf59f2a96b033dab56f46469650c959717d60";
+                accessToken = "984d07c3a4df0322cb67d5ad9be24477ad140f05";
                 after_epoch = "1704067200";
                 per_page = 200;
                 _a.label = 1;
@@ -62,15 +112,15 @@ var fetchActivities = function () { return __awaiter(void 0, void 0, void 0, fun
                 response = _a.sent();
                 return [2 /*return*/, response.data];
             case 3:
-                error_1 = _a.sent();
-                console.error("Error Fetching Activities:", error_1);
+                error_3 = _a.sent();
+                console.error("Error Fetching Activities: ", error_3);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
 var formattedActivities = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var activities, allActivities, i, curr, currFormattedActivity, error_2;
+    var activities, allActivities, i, curr, currFormattedActivity, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -93,8 +143,8 @@ var formattedActivities = function () { return __awaiter(void 0, void 0, void 0,
                 }
                 return [2 /*return*/, allActivities];
             case 2:
-                error_2 = _a.sent();
-                console.error("Error fetching and formatting activities:", error_2);
+                error_4 = _a.sent();
+                console.error("Error fetching and formatting activities:", error_4);
                 return [2 /*return*/, []];
             case 3: return [2 /*return*/];
         }
@@ -102,13 +152,11 @@ var formattedActivities = function () { return __awaiter(void 0, void 0, void 0,
 }); };
 exports.formattedActivities = formattedActivities;
 var test = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var res;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, exports.formattedActivities)()];
+            case 0: return [4 /*yield*/, StravaOAuth2()];
             case 1:
-                res = _a.sent();
-                console.log(res);
+                _a.sent();
                 return [2 /*return*/];
         }
     });

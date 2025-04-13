@@ -1,11 +1,7 @@
-"use client";
 import { useState, useEffect } from "react";
-import Tile from "./tile";
-import { Activity } from "@/server/activity";
-import { formattedActivities } from "@/server/strava";
-import beforeLogin from "./components/beforeLogin";
+import Tile from "../tile";
 
-export default function Body() {
+export default function afterLogin() {
 	const [grid, setGrid] = useState<JSX.Element[]>([]);
 	const [today, setToday] = useState(new Date());
 
@@ -49,12 +45,6 @@ export default function Body() {
 				<div className="items-start flex flex-col gap-1">{grid}</div>
 			</div>
 			<div className="">{today.toDateString()}</div>
-			<button
-				className="bg-orange-500 text-white h-10 w-32 rounded-lg hover:scale-110 transition-all duration-300"
-				onClick={() => (window.location.href = "api/auth/login")}
-			>
-				Strava OAuth
-			</button>
 		</div>
 	);
 }
