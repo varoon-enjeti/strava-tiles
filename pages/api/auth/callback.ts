@@ -17,8 +17,8 @@ export default async function handler(
 
 	try {
 		const response = await axios.post("https://www.strava.com/oauth/token", {
-			client_id: process.env.CLIENT_ID,
-			client_secret: process.env.CLIENT_SECRET,
+			client_id: process.env.NEXT_PUBLIC_CLIENT_ID,
+			client_secret: process.env.NEXT_PUBLIC_CLIENT_SECRET,
 			code: CODE,
 			grant_type: "authorization_code",
 		});

@@ -17,6 +17,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	const REDIRECT_URI = `${origin}/api/auth/callback`;
 	console.log(REDIRECT_URI);
 
-	const stravaOAuth2URL = `http://www.strava.com/oauth/authorize?client_id= ${process.env.CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URI}&approval_prompt=force&scope=activity:read_all`;
+	const stravaOAuth2URL = `http://www.strava.com/oauth/authorize?client_id= ${process.env.NEXT_PUBLIC_CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URI}&approval_prompt=force&scope=activity:read_all`;
 	res.redirect(stravaOAuth2URL);
 }
