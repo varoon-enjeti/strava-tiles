@@ -121,6 +121,7 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 				</div>
 				<div className="">{today.toDateString()}</div>
 			</div>
+			<div className="">Damn {athlete?.firstname}, you chopped bruh...</div>
 			<button
 				className="bg-orange-600 text-white w-24 h-10 rounded-lg hover:scale-110 transition-all duration-300"
 				onClick={logOut}
