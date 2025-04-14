@@ -59,7 +59,8 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 	// Grid Setup
 
 	useEffect(() => {
-		if (!today || Object.keys(activityMap).length === 0) return;
+		let isLoaded = true;
+		if (!today || Object.keys(activityMap).length === 0) isLoaded = false;
 
 		const raw: JSX.Element[] = [];
 		const presentDay = new Date();
@@ -78,7 +79,12 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 				const dayActivities = activityMap[key] || [];
 
 				row.push(
-					<Tile key={`${i}-${j}`} date={inst} activities={dayActivities} />
+					<Tile
+						key={`${i}-${j}`}
+						date={inst}
+						activities={dayActivities}
+						isLoaded={isLoaded}
+					/>
 				);
 			}
 
