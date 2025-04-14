@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Tile from "../tile";
 import Image from "next/image";
+import { before } from "node:test";
 
 type Athlete = {
 	firstname: string;
@@ -12,8 +13,37 @@ type Athlete = {
 	profile: string;
 };
 
+function fetchActivities() {
+	const presentDay = new Date();
+	const oneYearAgo = new Date();
+	oneYearAgo.setDate(presentDay.getDate() - presentDay.getDay() - 364);
+	const afterEpoch = Math.floor(oneYearAgo.getTime() / 1000);
+	const beforeEpoch = Math.floor(presentDay.getTime() / 1000);
+
+	fetch(
+		`/api/activities/fetch?beforeEpoch=${beforeEpoch}&afterEpoch=${afterEpoch}`
+	)
+		.then((res) => res.json())
+		.then((activities) => {
+			console.log(activities);
+		})
+		.catch((err) => {
+			console.error("Failed to fetch activities: ", err);
+		});
+}
+
 export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 	// Fetch Activities
+	// useEffect(() => {
+	// 	fetch("/api/activities/fetch")
+	// 		.then((res) => res.json())
+	// 		.then((activities) => {
+	// 			console.log(activities);
+	// 		})
+	// 		.catch((err) => {
+	// 			console.error("Failed to fetch activities: ", err);
+	// 		});
+	// });
 
 	// Grid Setup
 
@@ -22,18 +52,21 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 
 	useEffect(() => {
 		const raw: JSX.Element[] = [];
-		const currentToday = new Date();
-		const reference = new Date();
-		reference.setDate(currentToday.getDate() - currentToday.getDay() - 364);
+		const presentDay = new Date();
+		const oneYearAgo = new Date();
+		oneYearAgo.setDate(presentDay.getDate() - presentDay.getDay() - 364);
+
+		const afterEpoch = Math.floor(oneYearAgo.getTime() / 1000);
+		const beforeEpoch = Math.floor(presentDay.getTime() / 1000);
 
 		for (let i = 0; i < 7; i++) {
 			const row: JSX.Element[] = [];
 
 			// i represents the day of the week (row), and j represents the week (column)
 			for (let j = 0; j < 53; j++) {
-				const inst = new Date(reference);
-				inst.setDate(reference.getDate() + j * 7 + i);
-				if (j === 52 && inst > currentToday) {
+				const inst = new Date(oneYearAgo);
+				inst.setDate(oneYearAgo.getDate() + j * 7 + i);
+				if (j === 52 && inst > presentDay) {
 					continue;
 				}
 				row.push(<Tile key={`${i}-${j}`} date={inst} />);
@@ -46,7 +79,7 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 		}
 
 		setGrid(raw);
-		setToday(currentToday);
+		setToday(presentDay);
 	}, []);
 
 	// Athlete Profile Setup
@@ -129,12 +162,13 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 			>
 				Log Out
 			</button>
-			{/* <button
+			<button
 				className="bg-orange-600 text-white w-24 h-10 rounded-lg hover:scale-110 transition-all duration-300"
-				onClick={() => (window.location.href = "api/activities/fetch")}
+				// onClick={() => (window.location.href = "api/activities/fetch")}
+				onClick={() => fetchActivities()}
 			>
 				Fetch
-			</button> */}
+			</button>
 		</div>
 	);
 }
