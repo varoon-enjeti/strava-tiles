@@ -13,6 +13,8 @@ type Athlete = {
 };
 
 export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
+	// Fetch Activities
+
 	// Grid Setup
 
 	const [grid, setGrid] = useState<JSX.Element[]>([]);
