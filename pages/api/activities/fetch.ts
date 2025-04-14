@@ -3,6 +3,7 @@ import { parse } from "cookie";
 import axios from "axios";
 import { after, before, beforeEach } from "node:test";
 import { Activity } from "@/app/activity";
+import { Noto_Sans_Imperial_Aramaic } from "next/font/google";
 
 export default async function handler(
 	req: NextApiRequest,
@@ -30,7 +31,7 @@ export default async function handler(
 
 	// console.log(token);
 
-	let activities: Activity[] = [];
+	let activityMap: Record<string, Activity[]> = {};
 	const per_page = 200;
 
 	try {
@@ -51,36 +52,32 @@ export default async function handler(
 				break;
 			}
 
-			const lastDate = response.data.at(-1).start_date;
+			const lastDate = response.data.at(-1).start_date_local;
 			beforeEpoch = Math.floor(new Date(lastDate).getTime() / 1000);
 
-			const currActivities: Activity[] = response.data.map(
-				(a: any) =>
-					new Activity({
-						name: a.name,
-						type: a.type,
-						date: a.start_date,
-						distance: a.distance,
-						elapsed_time: a.elapsed_time,
-					})
-			);
+			for (const a of response.data) {
+				const activity = new Activity({
+					name: a.name,
+					type: a.type,
+					date: a.start_date_local,
+					distance: a.distance,
+					elapsed_time: a.elapsed_time,
+				});
 
-			activities.push(...currActivities);
+				if (!activityMap[activity.date]) {
+					activityMap[activity.date] = [];
+				}
+				activityMap[activity.date].push(activity);
+			}
 		}
 
-		// console.log(activities);
+		console.log(activityMap);
 
-		console.log(activities.length);
-
-		// console.log(response.data[0].start_date);
-
-		// console.log(Object.keys(response.data).length);
-		res.status(200).json(activities);
+		res.status(200).json(activityMap);
 	} catch (error: any) {
 		console.error(
 			"Failed to fetch activities:",
-			// error.response?.data || error.message
-			error
+			error.response?.data || error.message
 		);
 		res.status(500).json({ error: "Failed to fetch activities from Strava" });
 	}

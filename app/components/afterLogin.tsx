@@ -66,6 +66,7 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 			for (let j = 0; j < 53; j++) {
 				const inst = new Date(oneYearAgo);
 				inst.setDate(oneYearAgo.getDate() + j * 7 + i);
+				// console.log(inst.toISOString().split("T")[0]);
 				if (j === 52 && inst > presentDay) {
 					continue;
 				}
