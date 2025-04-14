@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import Tile from "../tile";
+import Tile from "./tile";
+import LegendTile from "./legendTile";
 import Image from "next/image";
 import { Activity } from "../activity";
 
@@ -191,6 +192,15 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 						<div className="text-sm">Fri</div>
 					</div>
 					<div className="items-start flex flex-col gap-1">{grid}</div>
+				</div>
+				<div className="flex h-3 gap-1 w-full justify-end mr-[29px]">
+					<div className="text-xs align-middle text-center -mt-[1px]">Less</div>
+					<LegendTile text="0 Minutes" color="bg-gray-300" />
+					<LegendTile text="≤ 30 Minutes" color="bg-orange-200" />
+					<LegendTile text="≤ 1 Hour" color="bg-orange-300" />
+					<LegendTile text="≤ 2 Hours" color="bg-orange-500" />
+					<LegendTile text="> 2 Hours" color="bg-orange-700" />
+					<div className="text-xs align-middle text-center -mt-[1px]">More</div>
 				</div>
 				<div className="">{today.toDateString()}</div>
 			</div>
