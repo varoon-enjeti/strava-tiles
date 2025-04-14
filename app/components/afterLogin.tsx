@@ -1,8 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Tile from "../tile";
 import Image from "next/image";
-import { before } from "node:test";
+import { Activity } from "../activity";
 
 type Athlete = {
 	firstname: string;
@@ -13,65 +13,75 @@ type Athlete = {
 	profile: string;
 };
 
-function fetchActivities() {
-	const presentDay = new Date();
-	const oneYearAgo = new Date();
-	oneYearAgo.setDate(presentDay.getDate() - presentDay.getDay() - 364);
-	const afterEpoch = Math.floor(oneYearAgo.getTime() / 1000);
-	const beforeEpoch = Math.floor(presentDay.getTime() / 1000);
-
-	fetch(
-		`/api/activities/fetch?beforeEpoch=${beforeEpoch}&afterEpoch=${afterEpoch}`
-	)
-		.then((res) => res.json())
-		.then((activities) => {
-			console.log(activities);
-		})
-		.catch((err) => {
-			console.error("Failed to fetch activities: ", err);
-		});
-}
-
 export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
+	const [activityMap, setActivityMap] = useState<Record<string, Activity[]>>(
+		{}
+	);
+	const [grid, setGrid] = useState<JSX.Element[]>([]);
+	const [today, setToday] = useState(new Date());
+	const [athlete, setAthlete] = useState<Athlete | null>(null);
+
 	// Fetch Activities
-	// useEffect(() => {
-	// 	fetch("/api/activities/fetch")
-	// 		.then((res) => res.json())
-	// 		.then((activities) => {
-	// 			console.log(activities);
-	// 		})
-	// 		.catch((err) => {
-	// 			console.error("Failed to fetch activities: ", err);
-	// 		});
-	// });
+
+	useEffect(() => {
+		console.log("fetching activities");
+		const presentDay = new Date();
+		const oneYearAgo = new Date();
+		oneYearAgo.setDate(presentDay.getDate() - presentDay.getDay() - 364);
+		const afterEpoch = Math.floor(oneYearAgo.getTime() / 1000);
+		const beforeEpoch = Math.floor(presentDay.getTime() / 1000);
+
+		fetch(
+			`/api/activities/fetch?beforeEpoch=${beforeEpoch}&afterEpoch=${afterEpoch}`
+		)
+			.then((res) => res.json())
+			.then((rawMap: Record<string, any[]>) => {
+				const convertedMap: Record<string, Activity[]> = {};
+				for (const date in rawMap) {
+					convertedMap[date] = rawMap[date].map(
+						(a) =>
+							new Activity({
+								name: a.name,
+								type: a.type,
+								date: a.date,
+								distance: a.distance,
+								elapsed_time: a.elapsed_time,
+							})
+					);
+				}
+				setActivityMap(convertedMap);
+			})
+			.catch((err) => {
+				console.error("Failed to fetch activities: ", err);
+			});
+	}, []);
 
 	// Grid Setup
 
-	const [grid, setGrid] = useState<JSX.Element[]>([]);
-	const [today, setToday] = useState(new Date());
-
 	useEffect(() => {
+		if (!today || Object.keys(activityMap).length === 0) return;
+
 		const raw: JSX.Element[] = [];
 		const presentDay = new Date();
 		const oneYearAgo = new Date();
 		oneYearAgo.setDate(presentDay.getDate() - presentDay.getDay() - 364);
 
-		const afterEpoch = Math.floor(oneYearAgo.getTime() / 1000);
-		const beforeEpoch = Math.floor(presentDay.getTime() / 1000);
-
 		for (let i = 0; i < 7; i++) {
 			const row: JSX.Element[] = [];
 
-			// i represents the day of the week (row), and j represents the week (column)
 			for (let j = 0; j < 53; j++) {
-				const inst = new Date(oneYearAgo);
+				const inst = new Date(oneYearAgo.getTime());
 				inst.setDate(oneYearAgo.getDate() + j * 7 + i);
-				// console.log(inst.toISOString().split("T")[0]);
-				if (j === 52 && inst > presentDay) {
-					continue;
-				}
-				row.push(<Tile key={`${i}-${j}`} date={inst} />);
+				if (j === 52 && inst > presentDay) continue;
+
+				const key = inst.toISOString().split("T")[0];
+				const dayActivities = activityMap[key] || [];
+
+				row.push(
+					<Tile key={`${i}-${j}`} date={inst} activities={dayActivities} />
+				);
 			}
+
 			raw.push(
 				<div key={i} className="flex gap-1">
 					{row}
@@ -80,12 +90,9 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 		}
 
 		setGrid(raw);
-		setToday(presentDay);
-	}, []);
+	}, [activityMap, today]);
 
 	// Athlete Profile Setup
-
-	const [athlete, setAthlete] = useState<Athlete | null>(null);
 
 	useEffect(() => {
 		const cookies = Object.fromEntries(
@@ -162,13 +169,6 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 				onClick={logOut}
 			>
 				Log Out
-			</button>
-			<button
-				className="bg-orange-600 text-white w-24 h-10 rounded-lg hover:scale-110 transition-all duration-300"
-				// onClick={() => (window.location.href = "api/activities/fetch")}
-				onClick={() => fetchActivities()}
-			>
-				Fetch
 			</button>
 		</div>
 	);

@@ -3,9 +3,10 @@ import { Duration } from "luxon";
 export class Activity {
 	name: string;
 	type: string;
-	date: strings;
+	date: string;
 	distance: number; // miles
 	elapsed_time: string; // hh:mm:ss
+	raw_elapsed_seconds: number;
 
 	constructor({
 		name,
@@ -27,5 +28,6 @@ export class Activity {
 		this.elapsed_time = Duration.fromObject({ seconds: elapsed_time }).toFormat(
 			"hh:mm:ss"
 		);
+		this.raw_elapsed_seconds = elapsed_time;
 	}
 }
