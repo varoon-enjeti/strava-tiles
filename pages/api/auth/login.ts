@@ -1,9 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { redirect } from "next/dist/server/api-utils";
 
-// const CLIENT_ID = "131710";
-// const REDIRECT_URI = "http://localhost:3000/api/auth/callback";
-
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	const origin = new URL(
 		req.url || "",

@@ -2,9 +2,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import { serialize } from "cookie";
 
-// const CLIENT_ID = "131710";
-// const CLIENT_SECRET = "0bae0fe68a5a2ad837e777a5f98d408837af03e1";
-
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
