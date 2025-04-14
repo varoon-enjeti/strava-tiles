@@ -29,8 +29,6 @@ export default function Body() {
 			) : (
 				<BeforeLogin />
 			)}
-			{/* <BeforeLogin />
-			<AfterLogin /> */}
 		</div>
 	);
 }
