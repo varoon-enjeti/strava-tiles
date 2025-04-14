@@ -27,17 +27,21 @@ export default function Tile({ date, activities }: DayTileProps) {
 	}
 
 	return (
-		<div className="w-3 h-3 rounded group">
+		<div className="relative w-3 h-3 group">
 			<div className={`w-full h-full ${color} rounded`}></div>
-			<span className="absolute scale-0 -mt-10 rounded-lg bg-gray-300 opacity-90 border-[1px] border-gray-900 text-xs group-hover:scale-100 flex flex-col p-1 items-start">
+
+			<div className="absolute left-0 bottom-0 translate-y-[0px] scale-0 group-hover:scale-100 transition-transform z-10 bg-gray-300 border border-gray-900 text-xs rounded p-1 flex flex-col items-start w-max max-w-[10rem] whitespace-nowrap shadow-lg">
 				<div className="font-semibold">{date.toLocaleDateString()}</div>
 				{activities.map((activity, idx) => (
-					<div className="" key={idx}>
+					<div key={idx}>
 						{activity.type}: {activity.elapsed_time}
 					</div>
 				))}
-				<div className="mt-1 font-semibold">Total: {totalFormatted}</div>
-			</span>
+				<div className="mt-1 font-semibold">
+					Total:{" "}
+					{Duration.fromObject({ seconds: totalSeconds }).toFormat("hh:mm:ss")}
+				</div>
+			</div>
 		</div>
 	);
 }

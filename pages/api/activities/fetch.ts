@@ -31,7 +31,7 @@ export default async function handler(
 
 	// console.log(token);
 
-	let activityMap: Record<string, Activity[]> = {};
+	let activityMap: Record<string, any[]> = {};
 	const per_page = 200;
 
 	try {
@@ -56,18 +56,6 @@ export default async function handler(
 			beforeEpoch = Math.floor(new Date(lastDate).getTime() / 1000);
 
 			for (const a of response.data) {
-				// const activity = new Activity({
-				// 	name: a.name,
-				// 	type: a.type,
-				// 	date: a.start_date_local,
-				// 	distance: a.distance,
-				// 	elapsed_time: a.elapsed_time,
-				// });
-
-				// if (!activityMap[activity.date]) {
-				// 	activityMap[activity.date] = [];
-				// }
-				// activityMap[activity.date].push(activity);
 				const key = new Date(a.start_date_local).toISOString().split("T")[0];
 
 				if (!activityMap[key]) {
