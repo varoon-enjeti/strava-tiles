@@ -80,8 +80,6 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 		}
 	}, []);
 
-	console.log(athlete);
-
 	// Log Out Button Handler
 
 	function logOut() {
@@ -93,7 +91,7 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 
 	return (
 		<div className="w-full h-full flex flex-col gap-6 justify-center items-center">
-			<div className="flex gap-2 w-[810px] h-[90px]">
+			<div className="flex gap-3 w-[810px] h-[90px]">
 				{athlete?.profile && (
 					<Image
 						className="rounded-full border-[2.5px] border-orange-600"
