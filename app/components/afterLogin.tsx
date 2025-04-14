@@ -92,6 +92,29 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 		setGrid(raw);
 	}, [activityMap, today]);
 
+	// Month Labels
+	const monthLabels: JSX.Element[] = [];
+	const oneYearAgo = new Date();
+	oneYearAgo.setDate(today.getDate() - today.getDay() - 364);
+	let lastMonth = -1;
+
+	for (let j = 0; j < 53; j++) {
+		const date = new Date(oneYearAgo.getTime());
+		date.setDate(date.getDate() + j * 7);
+
+		const month = date.getMonth(); // 0-11
+		if (month !== lastMonth) {
+			lastMonth = month;
+			monthLabels.push(
+				<div key={j} className="text-sm w-3 text-center">
+					{date.toLocaleString("default", { month: "short" })}
+				</div>
+			);
+		} else {
+			monthLabels.push(<div key={j} className="w-3" />); // empty space
+		}
+	}
+
 	// Athlete Profile Setup
 
 	useEffect(() => {
@@ -154,6 +177,7 @@ export default function AfterLogin({ onLogout }: { onLogout: () => void }) {
 				</div>
 			</div>
 			<div className="flex flex-col items-center gap-2">
+				<div className="flex ml-[38px] gap-[4px] mb-[-1px]">{monthLabels}</div>
 				<div className="flex gap-2">
 					<div className="flex flex-col mt-3 gap-[12px]">
 						<div className="text-sm">Mon</div>
