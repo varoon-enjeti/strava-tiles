@@ -1,20 +1,23 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function BeforeLogin() {
 	return (
-		<div className="flex flex-col items-center justify-centerw-full h-full flex flex-col gap-1 justify-center items-center">
-			<button
-				className="bg-orange-500 text-white h-10 w-32 rounded-lg hover:scale-110 transition-all duration-300"
+		<div className="flex flex-col items-center justify-center w-full h-full gap-1">
+			<Image
+				className="bg-orange-500 text-white h-[36px] w-[177.5px] rounded-lg hover:scale-110 transition-all duration-300"
+				src="/strava_button.png"
+				width={474}
+				height={96}
+				alt="Connect with Strava Button"
 				onClick={() => {
 					const origin = window.location.origin;
 					window.location.href = `api/auth/login?origin=${encodeURIComponent(
 						origin
 					)}`;
 				}}
-			>
-				Strava OAuth
-			</button>
+			/>
 		</div>
 	);
 }
